@@ -1,63 +1,64 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import Task from '../task/task';
+import Task from '../task/task'
 
-import './task-list.css';
+import './task-list.css'
 
-export default class TaskList extends Component {
+function TaskList(props) {
+  const { todos, onDeleted, onToggleDone, onToggleEdit, onEditItem, onEditSubmit } = props
 
-  static defaultProps = {
+  const elements = todos.map((item) => {
+    const { id, done, edit, ...itemProps } = item
 
-  };
+    let classNames = ''
+    if (done) {
+      classNames += 'completed'
+    }
+    if (edit) {
+      classNames = 'editing'
+    }
 
-  static propTypes = {
-    todos: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onDeleted: PropTypes.func.isRequired,
-    onToggleDone: PropTypes.func.isRequired,
-    onToggleEdit: PropTypes.func.isRequired,
-    onEditItem: PropTypes.func.isRequired,
-    onEditSubmit: PropTypes.func.isRequired,
-  };
-
-  render() {
-
-    const { todos, onDeleted, onToggleDone, onToggleEdit, onEditItem, onEditSubmit } = this.props;
-
-    const elements = todos.map(item => {
-      const { id, done, edit, ...itemProps } = item;
-
-      let classNames = ''
-      if (done) {
-        classNames += 'completed'
-      }
-      if (edit) {
-        classNames = 'editing'
-      }
-
-      return (
-        <li className={classNames}
-          key={id}
-          onClick={(ev) => onToggleDone(ev, id)}
-        >
+    return (
+      <li className={classNames} key={id}>
+        <div onClick={(ev) => onToggleDone(ev, id)} role="presentation">
           <Task
             {...itemProps}
             done={done}
             edit={edit}
             id={id}
-            onDeleted={() => { onDeleted(id) }}
-            onToggleEdit={() => { onToggleEdit(id) }}
+            onDeleted={() => {
+              onDeleted(id)
+            }}
+            onToggleEdit={() => {
+              onToggleEdit(id)
+            }}
             onEditItem={onEditItem}
             onEditSubmit={onEditSubmit}
           />
-        </li>
-      );
-    });
+        </div>
+      </li>
+    )
+  })
 
-    return (
-      <ul className="todo-list">
-        {elements}
-      </ul>
-    );
-  };
+  return <ul className="todo-list">{elements}</ul>
 }
+
+TaskList.propTypes = {
+  todos: PropTypes.arrayOf(
+    PropTypes.shape({
+      task: PropTypes.string,
+      done: PropTypes.bool,
+      edit: PropTypes.bool,
+      id: PropTypes.number,
+      date: PropTypes.instanceOf(Date),
+    })
+  ).isRequired,
+  onDeleted: PropTypes.func.isRequired,
+  onToggleDone: PropTypes.func.isRequired,
+  onToggleEdit: PropTypes.func.isRequired,
+  onEditItem: PropTypes.func.isRequired,
+  onEditSubmit: PropTypes.func.isRequired,
+}
+
+export default TaskList

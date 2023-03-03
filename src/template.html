@@ -1,77 +1,75 @@
 <html lang="en" data-framework="es6">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vanilla ES6 • TodoMVC</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>Vanilla ES6 • TodoMVC</title>
-  <link rel="stylesheet" href="index.css">
-</head>
-
-<body>
-  <section class="todoapp">
-    <!--NewTaskForm-->
-    <header class="header">
-      <h1>todos</h1>
-      <input class="new-todo" placeholder="What needs to be done?" autofocus>
-    </header>
-    <section class="main">
-      <!--TaskList-->
-      <ul class="todo-list">
-        <!--Task-->
-        <li class="completed">
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label>
-              <span class="description">Completed task</span>
-              <span class="created">created 17 seconds ago</span>
-            </label>
-            <button class="icon icon-edit"></button>
-            <button class="icon icon-destroy"></button>
-          </div>
-        </li>
-        <!--Task-->
-        <li class="editing">
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label>
-              <span class="description">Editing task</span>
-              <span class="created">created 5 minutes ago</span>
-            </label>
-            <button class="icon icon-edit"></button>
-            <button class="icon icon-destroy"></button>
-          </div>
-          <input type="text" class="edit" value="Editing task">
-        </li>
-        <!--Task-->
-        <li>
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label>
-              <span class="description">Active task</span>
-              <span class="created">created 5 minutes ago</span>
-            </label>
-            <button class="icon icon-edit"></button>
-            <button class="icon icon-destroy"></button>
-          </div>
-        </li>
-      </ul>
-      <!--Footer-->
-      <footer class="footer">
-        <span class="todo-count">1 items left</span>
-        <ul class="filters">
-          <li>
-            <button class="selected">All</button>
+  <body>
+    <section class="todoapp">
+      <!--NewTaskForm-->
+      <header class="header">
+        <h1>todos</h1>
+        <input class="new-todo" placeholder="What needs to be done?" autofocus />
+      </header>
+      <section class="main">
+        <!--TaskList-->
+        <ul class="todo-list">
+          <!--Task-->
+          <li class="completed">
+            <div class="view">
+              <input class="toggle" type="checkbox" />
+              <label>
+                <span class="description">Completed task</span>
+                <span class="created">created 17 seconds ago</span>
+              </label>
+              <button class="icon icon-edit"></button>
+              <button class="icon icon-destroy"></button>
+            </div>
           </li>
-          <li>
-            <button>Active</button>
+          <!--Task-->
+          <li class="editing">
+            <div class="view">
+              <input class="toggle" type="checkbox" />
+              <label>
+                <span class="description">Editing task</span>
+                <span class="created">created 5 minutes ago</span>
+              </label>
+              <button class="icon icon-edit"></button>
+              <button class="icon icon-destroy"></button>
+            </div>
+            <input type="text" class="edit" value="Editing task" />
           </li>
+          <!--Task-->
           <li>
-            <button>Completed</button>
+            <div class="view">
+              <input class="toggle" type="checkbox" />
+              <label>
+                <span class="description">Active task</span>
+                <span class="created">created 5 minutes ago</span>
+              </label>
+              <button class="icon icon-edit"></button>
+              <button class="icon icon-destroy"></button>
+            </div>
           </li>
         </ul>
-        <button class="clear-completed">Clear completed</button>
-      </footer>
+        <!--Footer-->
+        <footer class="footer">
+          <span class="todo-count">1 items left</span>
+          <ul class="filters">
+            <li>
+              <button class="selected">All</button>
+            </li>
+            <li>
+              <button>Active</button>
+            </li>
+            <li>
+              <button>Completed</button>
+            </li>
+          </ul>
+          <button class="clear-completed">Clear completed</button>
+        </footer>
+      </section>
     </section>
-  </section>
-</body>
-
+  </body>
 </html>
