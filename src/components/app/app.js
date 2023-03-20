@@ -115,8 +115,8 @@ export default class App extends Component {
       edit: false,
       id: this.maxId++,
       date: new Date(),
-      min: min || 1,
-      sec: sec || 30,
+      min: min || 0,
+      sec: sec || 0,
     }
   }
 
