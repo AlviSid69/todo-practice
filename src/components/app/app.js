@@ -14,8 +14,8 @@ export default class App extends Component {
     filter: 'all',
   }
 
-  addItem = (text) => {
-    const newItem = this.createTodoItem(text)
+  addItem = (text, min, sec) => {
+    const newItem = this.createTodoItem(text, min, sec)
     if (newItem.task.length < 1) return
 
     this.setState(({ todoData }) => {
@@ -54,7 +54,13 @@ export default class App extends Component {
   }
 
   onToggleDone = (ev, id) => {
-    if (ev.target?.name === 'remove' || ev.target?.name === 'edit' || ev.target?.className === 'edit') return
+    if (
+      ev.target?.name === 'remove' ||
+      ev.target?.name === 'edit' ||
+      ev.target?.className === 'edit' ||
+      ev.target?.name === 'timer'
+    )
+      return
     this.setState(({ todoData }) => ({
       todoData: this.toggleProperty(todoData, id, 'done'),
     }))
@@ -102,13 +108,15 @@ export default class App extends Component {
     }
   }
 
-  createTodoItem(task) {
+  createTodoItem(task, min, sec) {
     return {
       task,
       done: false,
       edit: false,
       id: this.maxId++,
       date: new Date(),
+      min: min || 1,
+      sec: sec || 30,
     }
   }
 

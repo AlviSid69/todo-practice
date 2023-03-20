@@ -6,6 +6,8 @@ import './new-task-form.css'
 export default class NewTaskForm extends Component {
   state = {
     task: '',
+    min: '',
+    sec: '',
   }
 
   onTaskChange = (e) => {
@@ -14,22 +16,38 @@ export default class NewTaskForm extends Component {
     })
   }
 
-  onSubmit = (e) => {
-    e.preventDefault()
-    const { onItemAdded } = this.props
-    const { task } = this.state
-    onItemAdded(task)
+  onMinutesChange = (e) => {
     this.setState({
-      task: '',
+      min: e.target.value,
     })
   }
 
+  onSecondsChange = (e) => {
+    this.setState({
+      sec: e.target.value,
+    })
+  }
+
+  onSubmit = (e) => {
+    if (e.key === 'Enter') {
+      const { onItemAdded } = this.props
+      const { task, min, sec } = this.state
+      onItemAdded(task, min, sec)
+      this.setState({
+        task: '',
+        min: '',
+        sec: '',
+      })
+    }
+  }
+
   render() {
-    const { task } = this.state
+    const { task, min, sec } = this.state
     return (
       <header className="header">
         <h1>Todos</h1>
-        <form onSubmit={this.onSubmit}>
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+        <form className="new-todo-form" onKeyDown={this.onSubmit}>
           <input
             type="text"
             className="new-todo"
@@ -37,6 +55,8 @@ export default class NewTaskForm extends Component {
             onChange={this.onTaskChange}
             value={task}
           />
+          <input className="new-todo-form__timer" placeholder="Min" value={min} onChange={this.onMinutesChange} />
+          <input className="new-todo-form__timer" placeholder="Sec" value={sec} onChange={this.onSecondsChange} />
         </form>
       </header>
     )

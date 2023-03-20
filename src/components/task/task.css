@@ -1,3 +1,11 @@
+.description .icon {
+  margin-right: 2px !important;
+}
+
+.timer {
+  margin-left: 4px !important;
+}
+
 .toggle-all {
   width: 1px;
   height: 1px;
@@ -29,4 +37,39 @@
 
 .toggle-all:checked + label:before {
   color: #737373;
+}
+
+.todo-list li .icon-pause,
+.todo-list li .icon-play {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.todo-list li .icon-play {
+  font-size: 15px;
+}
+
+.icon-pause:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 20px;
+  width: 15px;
+  height: 15px;
+  background-image: url(/public/img/Pause-light.svg);
+}
+
+.icon-pause:hover:after {
+  background-image: url(/public/img/Pause.svg) !important;
+}
+
+.icon-play:after {
+  content: '▶';
+}
+
+.time {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
 }
