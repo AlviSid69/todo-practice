@@ -3,7 +3,11 @@
     "browser": true,
     "es2021": true
   },
-  "ignorePatterns": ["node_modules", "dist", "build"],
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    "build"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -24,7 +28,11 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "prettier", "import"],
+  "plugins": [
+    "react",
+    "prettier",
+    "import"
+  ],
   "rules": {
     "indent": [
       "error",
@@ -34,12 +42,24 @@
       }
     ],
     "prettier/prettier": "error",
-    "linebreak-style": [0, "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "never"],
+    "linebreak-style": [
+      0,
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
     "no-plusplus": 0,
+    "no-shadow": 0,
     "react/react-in-jsx-scope": "off",
+    "no-use-before-define": 0,
     "react/state-in-constructor": 0,
+    "react/function-component-definition": 0,
     "react/prop-types": 0,
     "react/jsx-props-no-spreading": 0,
     "class-methods-use-this": [
@@ -54,16 +74,27 @@
         "caseSensitive": false
       }
     ],
+    "import/no-extraneous-dependencies": 0,
     "react/jsx-filename-extension": [
       1,
       {
-        "extensions": [".js", ".jsx"]
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
       }
     ],
     "import/order": [
       2,
       {
-        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
         "newlines-between": "always"
       }
     ]
@@ -71,8 +102,16 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"],
-        "moduleDirectory": ["node_modules", "src/"]
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ],
+        "moduleDirectory": [
+          "node_modules",
+          "src/"
+        ]
       }
     }
   }

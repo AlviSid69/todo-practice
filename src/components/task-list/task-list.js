@@ -50,7 +50,7 @@ TaskList.propTypes = {
       task: PropTypes.string,
       done: PropTypes.bool,
       edit: PropTypes.bool,
-      id: PropTypes.number,
+      id: PropTypes.string,
       date: PropTypes.instanceOf(Date),
     })
   ).isRequired,

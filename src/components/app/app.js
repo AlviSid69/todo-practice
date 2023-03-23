@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+/* eslint-disable */
+import React, { useState } from 'react'
+import { v4 } from 'uuid'
 
 import NewTaskForm from '../new-task-form/new-task-form'
 import TaskList from '../task-list/task-list'
@@ -6,42 +8,45 @@ import Footer from '../footer/footer'
 
 import './app.css'
 
-export default class App extends Component {
-  maxId = 100
+const App = () => {
+  const [todoData, setTodoData] = useState([
+    createTodoItem('Completed task'),
+    createTodoItem('Editing task'),
+    createTodoItem('Active task'),
+  ])
+  const [filter, setFilter] = useState('all')
 
-  state = {
-    todoData: [],
-    filter: 'all',
+  function createTodoItem(task, min, sec) {
+    return {
+      task,
+      done: false,
+      edit: false,
+      id: v4(),
+      date: new Date(),
+      min: min || 0,
+      sec: sec || 0,
+    }
   }
 
-  addItem = (text, min, sec) => {
-    const newItem = this.createTodoItem(text, min, sec)
+  const addItem = (text, min, sec) => {
+    const newItem = createTodoItem(text, min, sec)
     if (newItem.task.length < 1) return
 
-    this.setState(({ todoData }) => {
-      const newArr = [...todoData, newItem]
-      return {
-        todoData: newArr,
-      }
-    })
+    setTodoData((todoData) => [...todoData, newItem])
   }
 
-  deleteItem = (id) => {
-    this.setState(({ todoData }) => {
+  const deleteItem = (id) => {
+    setTodoData((todoData) => {
       const idx = todoData.findIndex((el) => el.id === id)
-      const newArr = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)]
-      return { todoData: newArr }
+      return [...todoData.slice(0, idx), ...todoData.slice(idx + 1)]
     })
   }
 
-  clearComplited = () => {
-    this.setState(({ todoData }) => {
-      const copy = todoData.slice().filter((item) => !item.done)
-      return { todoData: copy }
-    })
+  const clearCompleted = () => {
+    setTodoData((todoData) => todoData.filter((el) => !el.done))
   }
 
-  toggleProperty = (arr, id, propName) => {
+  const toggleProperty = (arr, id, propName) => {
     const idx = arr.findIndex((el) => el.id === id)
 
     const oldItem = arr[idx]
@@ -53,7 +58,7 @@ export default class App extends Component {
     return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)]
   }
 
-  onToggleDone = (ev, id) => {
+  const onToggleDone = (ev, id) => {
     if (
       ev.target?.name === 'remove' ||
       ev.target?.name === 'edit' ||
@@ -61,41 +66,37 @@ export default class App extends Component {
       ev.target?.name === 'timer'
     )
       return
-    this.setState(({ todoData }) => ({
-      todoData: this.toggleProperty(todoData, id, 'done'),
-    }))
+    setTodoData((todoData) => toggleProperty(todoData, id, 'done'))
   }
 
-  onToggleEdit = (id) => {
-    this.setState(({ todoData }) => ({
-      todoData: this.toggleProperty(todoData, id, 'edit'),
-    }))
+  const onToggleEdit = (id) => {
+    setTodoData((todoData) => toggleProperty(todoData, id, 'edit'))
   }
 
-  onEditSubmit = (ev, id) => {
+  const onEditSubmit = (ev, id) => {
     ev.preventDefault()
-    this.onToggleEdit(id)
+    onToggleEdit(id)
   }
 
-  onFilterChange = (filter) => {
-    this.setState({ filter })
+  const onFilterChange = (filter) => {
+    setFilter(filter)
   }
 
-  onEditItem = (ev, id) => {
+  const onEditItem = (ev, id) => {
     const text = ev.target.value
 
-    this.setState(({ todoData }) => {
+    setTodoData((todoData) => {
       const newArr = todoData.slice()
       newArr.map((el) => {
         // eslint-disable-next-line no-param-reassign
         if (el.id === id) el.task = text
         return el
       })
-      return { todoData: newArr }
+      return newArr
     })
   }
 
-  filter = (items, filter) => {
+  function filterTodo(items, filter) {
     switch (filter) {
       case 'all':
         return items
@@ -108,44 +109,26 @@ export default class App extends Component {
     }
   }
 
-  createTodoItem(task, min, sec) {
-    return {
-      task,
-      done: false,
-      edit: false,
-      id: this.maxId++,
-      date: new Date(),
-      min: min || 0,
-      sec: sec || 0,
-    }
-  }
+  const todoCounter = todoData.length - todoData.filter((el) => el.done).length
+  const visibleItems = filterTodo(todoData, filter)
 
-  render() {
-    const { todoData, filter } = this.state
-    const todoCounter = todoData.length - todoData.filter((el) => el.done).length
-    const visibleItems = this.filter(todoData, filter)
+  return (
+    <section className="todoapp">
+      <NewTaskForm onItemAdded={addItem} />
 
-    return (
-      <section className="todoapp">
-        <NewTaskForm onItemAdded={this.addItem} />
-
-        <section className="main">
-          <TaskList
-            todos={visibleItems}
-            onDeleted={this.deleteItem}
-            onToggleDone={this.onToggleDone}
-            onToggleEdit={this.onToggleEdit}
-            onEditItem={this.onEditItem}
-            onEditSubmit={this.onEditSubmit}
-          />
-          <Footer
-            count={todoCounter}
-            filter={filter}
-            onFilterChange={this.onFilterChange}
-            clearComplited={this.clearComplited}
-          />
-        </section>
+      <section className="main">
+        <TaskList
+          todos={visibleItems}
+          onDeleted={deleteItem}
+          onToggleDone={onToggleDone}
+          onToggleEdit={onToggleEdit}
+          onEditItem={onEditItem}
+          onEditSubmit={onEditSubmit}
+        />
+        <Footer count={todoCounter} filter={filter} onFilterChange={onFilterChange} clearComplited={clearCompleted} />
       </section>
-    )
-  }
+    </section>
+  )
 }
+
+export default App

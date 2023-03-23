@@ -94,7 +94,7 @@ Task.defaultProps = {
 
 Task.propTypes = {
   task: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   done: PropTypes.bool,
   edit: PropTypes.bool,
   date: PropTypes.instanceOf(Date).isRequired,
