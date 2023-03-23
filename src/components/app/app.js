@@ -10,9 +10,9 @@ import './app.css'
 
 const App = () => {
   const [todoData, setTodoData] = useState([
-    createTodoItem('Completed task'),
-    createTodoItem('Editing task'),
-    createTodoItem('Active task'),
+    createTodoItem('First task'),
+    createTodoItem('Second task'),
+    createTodoItem('Third task'),
   ])
   const [filter, setFilter] = useState('all')
 

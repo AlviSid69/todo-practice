@@ -1,91 +1,78 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { formatDistanceToNow } from 'date-fns'
 import KG from 'date-fns/locale/en-AU'
-
+/* eslint-disable */
 import './task.css'
 
-/* eslint-disable */
-export default class Task extends Component {
-  state = {
-    min: this.props.min,
-    sec: this.props.sec,
-    timer: false,
-  }
+const Task = ({ task, id, done, edit, date, min, sec, onDeleted, onEditItem, onToggleEdit, onEditSubmit }) => {
 
-  componentDidMount() {
-    this.timerID = setInterval(() => this.changeTimer(), 1000)
-  }
+  const [[mins, secs], setTime] = useState([min, sec])
+  const [over, setOver] = useState(false)
+  const [timer, setTimer] = useState(false)
 
-  componentWillUnmount() {
-    clearInterval(this.timerID)
-  }
+  useEffect(() => {
+    const timerID = setInterval(() => changeTimer(), 1000)
+    return () => clearInterval(timerID)
+  }, [changeTimer])
 
-  changeTimer = () => {
-    if (!this.state.timer) {
+  function changeTimer() {
+    if (!timer || over) {
       return
     }
-
-    let { min, sec } = this.state
-    if (sec <= 0) {
-      if (min === 0) {
-        return
-      }
-      min--
-      sec = 59
+    if (mins === 0 && secs === 0) {
+      setOver(true)
+    } else if (secs === 0) {
+      setTime([mins - 1, 59])
     } else {
-      sec--
+      setTime([mins, secs - 1])
     }
-    this.setState({ min, sec })
   }
 
-  playTimer = () => {
-    this.setState({ timer: true })
+  const playTimer = () => {
+    setTimer(true)
   }
 
-  pauseTimer = () => {
-    this.setState({ timer: false })
+  const pauseTimer = () => {
+    setTimer(false)
   }
 
-  render() {
-    const { task, id, done, edit, date, onDeleted, onEditItem, onToggleEdit, onEditSubmit } = this.props
-    const { min, sec } = this.state
+  return (
+    <>
+      <div className="view">
+        <input className="toggle" type="checkbox" checked={done} readOnly />
 
-    return (
-      <>
-        <div className="view">
-          <input className="toggle" type="checkbox" checked={done} readOnly />
-
-          <label htmlFor={id}>
-            <span className="title">{task}</span>
-            <span className="description">
-              <button name="timer" className="icon icon-play" onClick={this.playTimer}></button>
-              <button name="timer" className="icon icon-pause" onClick={this.pauseTimer}></button>
-              <span className="timer">
-                {min}:{sec}
-              </span>
+        <label htmlFor={id}>
+          <span className="title">{task}</span>
+          <span className="description">
+            <button type="button" name="timer" className="icon icon-play" onClick={playTimer} />
+            <button type="button" name="timer" className="icon icon-pause" onClick={pauseTimer} />
+            <span className="timer">
+              {mins}:{secs}
             </span>
-            <span className="description">
-              {`created ${formatDistanceToNow(date, {
-                includeSeconds: true,
-                locale: KG,
-                addSuffix: true,
-              })}`}
-            </span>
-          </label>
+          </span>
+          <span className="description">
+            {`created ${formatDistanceToNow(date, {
+              includeSeconds: true,
+              locale: KG,
+              addSuffix: true,
+            })}`}
+          </span>
+        </label>
 
-          <button type="button" name="edit" aria-label="Edit" className="icon icon-edit" onClick={onToggleEdit} />
-          <button type="button" name="remove" aria-label="Remove" className="icon icon-destroy" onClick={onDeleted} />
-        </div>
-        {edit && (
-          <form onSubmit={(ev) => onEditSubmit(ev, id)}>
-            <input type="text" className="edit" value={task} onChange={(ev) => onEditItem(ev, id)} />
-          </form>
-        )}
-      </>
-    )
-  }
+        <button type="button" name="edit" aria-label="Edit" className="icon icon-edit" onClick={onToggleEdit} />
+        <button type="button" name="remove" aria-label="Remove" className="icon icon-destroy" onClick={onDeleted} />
+      </div>
+      {edit && (
+        <form onSubmit={(ev) => onEditSubmit(ev, id)}>
+          <input type="text" className="edit" value={task} onChange={(ev) => onEditItem(ev, id)} />
+        </form>
+      )}
+    </>
+  )
 }
+
+export default Task
 
 Task.defaultProps = {
   done: false,
